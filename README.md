@@ -1,4 +1,2 @@
 # PySnake
-Test
-Snake in Python
-Test VS Code Test 3
+Ceci est un snake en Python !
