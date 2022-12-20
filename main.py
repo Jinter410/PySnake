@@ -34,8 +34,9 @@ while running:
         # On check si on a un évènement de sortie
         if event.type == pygame.QUIT:
             running = False
-        if event.type == pygame.KEYDOWN:
-            snake.mise_a_jour_position(event.key)
+        keys = pygame.key.get_pressed()
+        if keys:
+            snake.mise_a_jour_position(keys)
     screen.blit(background, (0, 0))
     snake.draw()
     pygame.display.update()
