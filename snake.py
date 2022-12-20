@@ -1,9 +1,24 @@
 import pygame
 
+UNITE_DE_MOUVEMENT = 0.8
+
 class Snake():
     def __init__(self, paramScreen):
         self.screen = paramScreen
+        self.x = 250
+        self.y = 250
+        self.size = 20
     
-    def draw_rectangle(self):
-        pygame.draw.rect(self.screen, (255,0,0), pygame.Rect(30, 30, 60, 60))
-        pygame.display.flip()
+    def mise_a_jour_position(self, key):
+        # On met à jour la position du snake en fonction de la touche pressée !
+        if key == pygame.K_DOWN:
+            self.y += UNITE_DE_MOUVEMENT
+        elif key == pygame.K_UP:
+            self.y -= UNITE_DE_MOUVEMENT
+        elif key == pygame.K_LEFT:
+            self.x -= UNITE_DE_MOUVEMENT
+        elif key == pygame.K_RIGHT:
+            self.x += UNITE_DE_MOUVEMENT
+
+    def draw(self):
+        pygame.draw.rect(self.screen, (255,0,0), [self.x, self.y, self.size, self.size])
