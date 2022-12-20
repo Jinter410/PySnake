@@ -9,15 +9,15 @@ class Snake():
         self.y = 250
         self.size = 20
     
-    def mise_a_jour_position(self, key):
+    def mise_a_jour_position(self, keys):
         # On met à jour la position du snake en fonction de la touche pressée !
-        if key == pygame.K_DOWN:
+        if keys[pygame.K_DOWN]:
             self.y += UNITE_DE_MOUVEMENT
-        elif key == pygame.K_UP:
+        if keys[pygame.K_UP]:
             self.y -= UNITE_DE_MOUVEMENT
-        elif key == pygame.K_LEFT:
+        if keys[pygame.K_LEFT]:
             self.x -= UNITE_DE_MOUVEMENT
-        elif key == pygame.K_RIGHT:
+        if keys[pygame.K_RIGHT]:
             self.x += UNITE_DE_MOUVEMENT
 
     def draw(self):
