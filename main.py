@@ -29,7 +29,7 @@ snake.draw()
 # Initialisation de la grille de jeu
 grid = GrilleJeu(snake)
 
-# Boucle d'affichage
+################# Boucle d'affichage #################
 running = True
 pygame.key.set_repeat(True)
 while running:
@@ -41,6 +41,7 @@ while running:
         if event.type == pygame.KEYUP:
             snake.direction = None
         keys = pygame.key.get_pressed()
+        print(keys[pygame.K_DOWN],keys[pygame.K_RIGHT])
         if keys:
             snake.mise_a_jour_position(keys)
             grid.mise_a_jour_grille()

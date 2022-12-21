@@ -1,6 +1,6 @@
 import pygame
 
-UNITE_DE_MOUVEMENT = 0.8
+UNITE_DE_MOUVEMENT = 0.5
 
 class Snake():
     def load_head_and_eyes(self):
