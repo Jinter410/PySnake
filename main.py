@@ -34,6 +34,9 @@ while running:
         # On check si on a un évènement de sortie
         if event.type == pygame.QUIT:
             running = False
+        # Si on a relâché une touche alors le snake n'a plus de direction
+        if event.type == pygame.KEYUP:
+            snake.direction = None
         keys = pygame.key.get_pressed()
         if keys:
             snake.mise_a_jour_position(keys)
