@@ -39,6 +39,14 @@ class GrilleJeu():
         if self.reward_hitbox.colliderect(self.snake.hitbox):
             self.spawn_random_reward()
             self.snake.spawn_body()
+            self.snake.spawn_body()
+            self.snake.spawn_body()
+            self.snake.spawn_body()
+            self.snake.spawn_body()
+            self.snake.spawn_body()
+            self.snake.spawn_body()
+            self.snake.spawn_body()
+            self.snake.spawn_body()
     
     def draw(self):
         self.screen.blit(self.reward, [self.reward_x, self.reward_y])

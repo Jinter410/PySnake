@@ -82,22 +82,23 @@ class Snake():
             self.y -= SPEED
             self.y_eyes -= SPEED
         else:
-            # Sinon on le téléporte en bas de la fenêtre !
-            self.y = self.max_y
-            self.y_eyes = self.max_y + self.head_size/2 - self.eyes_size/2
+            # Sinon on ne le déplace pas
+            self.y = 0
+            self.y_eyes = 0 + self.head_size/2 - self.eyes_size/2
         # On met à jour la direction du snake pour la position des yeux
         self.direction = "up"
 
     def down(self):
-        # Si la coordonnée en Y actuelle de la tête du serpent est au-dessus de la bordure
-        if self.y < self.max_y:
+        # Si la coordonnée en Y actuelle de la tête du serpent est au-dessus de 
+        # la bordure (avec prise en compte de la largeur) de la tête
+        if self.y < self.max_y - self.head_size:
             # Alors on le fait descendre d'une unité
             self.y += SPEED
             self.y_eyes += SPEED
         else:
-            # Sinon on le téléporte en haut de la fenêtre !
-            self.y = 0
-            self.y_eyes = 0 + self.head_size/2 - self.eyes_size/2
+            # Sinon on ne le déplace pas
+            self.y = self.max_y - self.head_size
+            self.y_eyes = self.max_y - self.head_size + self.head_size/2 - self.eyes_size/2
         # On met à jour la direction du snake pour la position des yeux
         self.direction = "down"
 
@@ -107,17 +108,17 @@ class Snake():
             self.x -= SPEED
             self.x_eyes -= SPEED
         else:
-            self.x = self.max_x
-            self.x_eyes = self.max_x + self.head_size/2 - self.eyes_size/2
+            self.x = 0
+            self.x_eyes = 0 + self.head_size/2 - self.eyes_size/2
         self.direction = "left"
             
     def right(self):
-        if self.x < self.max_x:
+        if self.x < self.max_x - self.head_size:
             self.x += SPEED
             self.x_eyes += SPEED
         else:
-            self.x = 0
-            self.x_eyes = 0 + self.head_size/2 - self.eyes_size/2
+            self.x = self.max_x - self.head_size
+            self.x_eyes = self.max_x - self.head_size + self.head_size/2 - self.eyes_size/2
         self.direction = "right"
 
     def spawn_body(self):
