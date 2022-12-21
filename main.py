@@ -2,6 +2,7 @@ import pygame
 from win32api import GetSystemMetrics
 from PIL import Image
 from snake import Snake
+from grille import GrilleJeu
 
 ################# INITIALISATION #################
 # Définir les dimensions de la fenêtre
@@ -25,6 +26,8 @@ pygame.display.flip()
 # Initialisation du snake
 snake = Snake(screen)
 snake.draw()
+# Initialisation de la grille de jeu
+grid = GrilleJeu(snake)
 
 # Boucle d'affichage
 running = True
@@ -40,6 +43,9 @@ while running:
         keys = pygame.key.get_pressed()
         if keys:
             snake.mise_a_jour_position(keys)
+            grid.spawn_random_reward()
+    # On redessne tout à chaque image : le fond, la récompense et la grille
     screen.blit(background, (0, 0))
+    grid.draw()
     snake.draw()
     pygame.display.update()
