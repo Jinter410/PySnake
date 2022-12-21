@@ -27,7 +27,8 @@ class GrilleJeu():
     
     def spawn_random_reward(self):
         # On choisit les coordonnées x et y de la récompense au hasard
-        # Entre les bordures de la fenêtre (je prends 20 de sécurité pour pas qu'elle sorte de l'écran et qu'on la voie pas)
+        # Entre les bordures de la fenêtre (je prends la taille de la tête en sécurité 
+        # pour pas qu'elle sorte de l'écran et qu'on la voie pas)
         self.reward_x = random.randint(0, self.max_x - self.size)
         self.reward_y = random.randint(0, self.max_y - self.size)
         self.reward_hitbox.x = self.reward_x

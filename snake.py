@@ -1,6 +1,6 @@
 import pygame
 
-SPEED = 2
+SPEED = 3
 NEW_BODYPART_X = {
     "left":1,
     "right":-1,
@@ -33,7 +33,7 @@ class Snake():
         self.direction = None
         self.head_size = 40
         self.eyes_size = self.head_size/2.3
-        self.body_size = self.head_size/2
+        self.body_size = self.head_size * 3/4
         self.load_head_and_eyes()
         self.max_x, self.max_y = self.screen.get_size()
         self.x_eyes = self.x + self.head_size/2 - self.eyes_size/2
@@ -43,19 +43,38 @@ class Snake():
         # La liste contenant les parties de son corps (qui est vide au début)
         self.bodyparts = []
     
+    def mise_a_jour_corps(self):
+        # On met à jour les coordonnées du corps du snake s'il y en a et qu'on a hit les arrows
+        if len(self.bodyparts) > 0:
+            for i in range(len(self.bodyparts)):
+                # Si c'est le premier morceau de corps on fait en fonction de la tête
+                if i == 0:
+                    self.bodyparts[0].x_center += (self.hitbox.centerx - self.bodyparts[0].x_center)*SPEED/50
+                    self.bodyparts[0].y_center += (self.hitbox.centery - self.bodyparts[0].y_center)*SPEED/50
+                    self.bodyparts[0].update_coords_from_center()
+                # Sinon on fait en fonction du morceau d'avant
+                else:
+                    self.bodyparts[i].x_center += (self.bodyparts[i-1].x_center - self.bodyparts[i].x_center)*SPEED/50
+                    self.bodyparts[i].y_center += (self.bodyparts[i-1].y_center - self.bodyparts[i].y_center)*SPEED/50
+                    self.bodyparts[i].update_coords_from_center()
+    
     def mise_a_jour_position(self, keys):
         # On met à jour la position du snake en fonction de la touche pressée !
         if keys[pygame.K_DOWN]:
             self.down()
+            self.mise_a_jour_corps()
         if keys[pygame.K_UP]:
             self.up()
+            self.mise_a_jour_corps()
         if keys[pygame.K_LEFT]:
             self.left()
+            self.mise_a_jour_corps()
         if keys[pygame.K_RIGHT]:
             self.right()
+            self.mise_a_jour_corps()
         self.hitbox.x = self.x
         self.hitbox.y = self.y
-
+    
     def up(self):
         # Si la coordonnée en Y actuelle de la tête du serpent est sous la bordure
         if self.y > 0:
