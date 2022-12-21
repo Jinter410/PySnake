@@ -25,6 +25,8 @@ class Snake():
         self.max_x, self.max_y = self.screen.get_size()
         self.x_eyes = self.x + self.head_size/2 - self.eyes_size/2
         self.y_eyes = self.y + self.head_size/2 - self.eyes_size/2
+        # La hitbox du snake
+        self.hitbox = pygame.Rect(self.x, self.y, self.head_size, self.head_size)
     
     def mise_a_jour_position(self, keys):
         # On met à jour la position du snake en fonction de la touche pressée !
@@ -36,6 +38,8 @@ class Snake():
             self.left()
         if keys[pygame.K_RIGHT]:
             self.right()
+        self.hitbox.x = self.x
+        self.hitbox.y = self.y
 
     def up(self):
         # Si la coordonnée en Y actuelle de la tête du serpent est sous la bordure

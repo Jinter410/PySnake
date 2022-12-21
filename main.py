@@ -43,7 +43,7 @@ while running:
         keys = pygame.key.get_pressed()
         if keys:
             snake.mise_a_jour_position(keys)
-            grid.spawn_random_reward()
+            grid.mise_a_jour_grille()
     # On redessne tout à chaque image : le fond, la récompense et la grille
     screen.blit(background, (0, 0))
     grid.draw()
