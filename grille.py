@@ -37,6 +37,7 @@ class GrilleJeu():
         # Si le serpent est sur la récompense alors elle change de coordonnées
         if self.reward_hitbox.colliderect(self.snake.hitbox):
             self.spawn_random_reward()
+            self.snake.spawn_body()
     
     def draw(self):
         self.screen.blit(self.reward, [self.reward_x, self.reward_y])

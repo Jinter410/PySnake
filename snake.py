@@ -1,11 +1,23 @@
 import pygame
 
-UNITE_DE_MOUVEMENT = 0.5
+SPEED = 2
+NEW_BODYPART_X = {
+    "left":1,
+    "right":-1,
+    "up":0,
+    "down":0
+}
+NEW_BODYPART_Y = {
+    "left":0,
+    "right":0,
+    "up":1,
+    "down":-1
+}
 
 class Snake():
     def load_head_and_eyes(self):
         # On charge l'image de la tête et on modifie sa taille
-        head_full = pygame.image.load('./img/snake_head.png')
+        head_full = pygame.image.load('./img/snake_part.png')
         resized_head = pygame.transform.scale(head_full, (self.head_size, self.head_size))
         self.head = resized_head
         # Pareil pour les yeux
@@ -21,12 +33,15 @@ class Snake():
         self.direction = None
         self.head_size = 40
         self.eyes_size = self.head_size/2.3
+        self.body_size = self.head_size/2
         self.load_head_and_eyes()
         self.max_x, self.max_y = self.screen.get_size()
         self.x_eyes = self.x + self.head_size/2 - self.eyes_size/2
         self.y_eyes = self.y + self.head_size/2 - self.eyes_size/2
         # La hitbox du snake
         self.hitbox = pygame.Rect(self.x, self.y, self.head_size, self.head_size)
+        # La liste contenant les parties de son corps (qui est vide au début)
+        self.bodyparts = []
     
     def mise_a_jour_position(self, keys):
         # On met à jour la position du snake en fonction de la touche pressée !
@@ -45,8 +60,8 @@ class Snake():
         # Si la coordonnée en Y actuelle de la tête du serpent est sous la bordure
         if self.y > 0:
             # Alors on le fait monter d'une unité (pareil pour les yeux du coup hein t'as capté)
-            self.y -= UNITE_DE_MOUVEMENT
-            self.y_eyes -= UNITE_DE_MOUVEMENT
+            self.y -= SPEED
+            self.y_eyes -= SPEED
         else:
             # Sinon on le téléporte en bas de la fenêtre !
             self.y = self.max_y
@@ -58,8 +73,8 @@ class Snake():
         # Si la coordonnée en Y actuelle de la tête du serpent est au-dessus de la bordure
         if self.y < self.max_y:
             # Alors on le fait descendre d'une unité
-            self.y += UNITE_DE_MOUVEMENT
-            self.y_eyes += UNITE_DE_MOUVEMENT
+            self.y += SPEED
+            self.y_eyes += SPEED
         else:
             # Sinon on le téléporte en haut de la fenêtre !
             self.y = 0
@@ -70,8 +85,8 @@ class Snake():
     # Même raisonnement pour la droite et la gauche avec les coordonnées en X :
     def left(self):
         if self.x > 0:
-            self.x -= UNITE_DE_MOUVEMENT
-            self.x_eyes -= UNITE_DE_MOUVEMENT
+            self.x -= SPEED
+            self.x_eyes -= SPEED
         else:
             self.x = self.max_x
             self.x_eyes = self.max_x + self.head_size/2 - self.eyes_size/2
@@ -79,12 +94,28 @@ class Snake():
             
     def right(self):
         if self.x < self.max_x:
-            self.x += UNITE_DE_MOUVEMENT
-            self.x_eyes += UNITE_DE_MOUVEMENT
+            self.x += SPEED
+            self.x_eyes += SPEED
         else:
             self.x = 0
             self.x_eyes = 0 + self.head_size/2 - self.eyes_size/2
         self.direction = "right"
+
+    def spawn_body(self):
+        # Si le serpent a des parties du corps
+        if len(self.bodyparts) > 0:
+            # Alors on récupère la dernière partie
+            last_bodypart = self.bodyparts[-1]
+            # Et on définit les coordonnées de la nouvelle partie du corps en fonction de la dernière 
+            new_bodypart_x_center = last_bodypart.hitbox.centerx + NEW_BODYPART_X[self.direction] * self.head_size
+            new_bodypart_y_center = last_bodypart.hitbox.centery + NEW_BODYPART_Y[self.direction] * self.head_size
+        # Sinon on fait la même chose en prenant la tête comme dernière partie
+        else:
+            new_bodypart_x_center = self.hitbox.centerx + NEW_BODYPART_X[self.direction] * self.head_size
+            new_bodypart_y_center = self.hitbox.centery + NEW_BODYPART_Y[self.direction] * self.head_size
+        # On crée la dernière partie du corps et on l'ajoute à la liste
+        new_part = BodyPart(self.body_size, new_bodypart_x_center, new_bodypart_y_center)
+        self.bodyparts.append(new_part)
 
     # Fonction de dessin qu'on appelle à chaque frame
     def draw(self):
@@ -106,3 +137,27 @@ class Snake():
         # Si le snake n'a pas de direction on dessine les yeux au centre
         else:
             self.screen.blit(self.eyes, [self.x_eyes, self.y_eyes])
+        # Puis on dessine les parties du corps du snake
+        for body_part in self.bodyparts:
+            self.screen.blit(body_part.body, [body_part.x, body_part.y])
+
+# Objet pour définir les propriétés et fonctions du corps du snake
+class BodyPart():
+    def load_body(self):
+         # On charge l'image du corps et on modifie sa taille
+        body_full = pygame.image.load('./img/snake_part.png')
+        resized_body = pygame.transform.scale(body_full, (self.size, self.size))
+        self.body = resized_body
+
+    def __init__(self, size, x_center, y_center):
+        self.x_center = x_center
+        self.y_center = y_center
+        self.size = size
+        self.update_coords_from_center()
+        self.load_body()
+        # La hitbox d'une partie du corps
+        self.hitbox = pygame.Rect(self.x, self.y, self.size, self.size)
+    
+    def update_coords_from_center(self):
+        self.x = self.x_center - self.size/2
+        self.y = self.y_center - self.size/2

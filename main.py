@@ -19,7 +19,7 @@ new_image.save('./img/background_resize.png')
 pygame.display.set_caption("PySnake des bg")
 # Lire l'image avec la librairie
 background = pygame.image.load('./img/background_resize.png')
-# Remplir la fenêtre avec l'image'
+# Remplir la fenêtre avec l'image
 screen.blit(background, (0, 0))
 # Afficher la fenêtre avec flip
 pygame.display.flip()
@@ -40,13 +40,13 @@ while running:
         # Si on a relâché une touche alors le snake n'a plus de direction
         if event.type == pygame.KEYUP:
             snake.direction = None
-        keys = pygame.key.get_pressed()
-        print(keys[pygame.K_DOWN],keys[pygame.K_RIGHT])
-        if keys:
-            snake.mise_a_jour_position(keys)
-            grid.mise_a_jour_grille()
+    keys = pygame.key.get_pressed()
+    if keys:
+        snake.mise_a_jour_position(keys)
+        grid.mise_a_jour_grille()
     # On redessne tout à chaque image : le fond, la récompense et la grille
     screen.blit(background, (0, 0))
     grid.draw()
     snake.draw()
     pygame.display.update()
+
