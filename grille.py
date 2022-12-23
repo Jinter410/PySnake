@@ -56,7 +56,6 @@ def compute_euclidean_distance(x1, y1, x2, y2):
 
 def circle_collision(x1, y1, r1, x2, y2, r2):
     dist = compute_euclidean_distance(x1, y1, x2, y2)
-    print(dist, r1,r2)
     if dist < (r1 + r2):
         return True
     return False

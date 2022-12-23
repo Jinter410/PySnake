@@ -14,7 +14,6 @@ NEW_BODYPART_Y = {
     "down": -1
 }
 
-
 class Snake():
     def load_head_and_eyes(self):
         # On charge l'image de la tête et on modifie sa taille
