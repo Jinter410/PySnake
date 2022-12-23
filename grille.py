@@ -1,4 +1,5 @@
 import pygame
+import math
 # Librairie pour l'aléatoire :
 import random
 
@@ -36,18 +37,27 @@ class GrilleJeu():
 
     def mise_a_jour_grille(self):
         # Si le serpent est sur la récompense alors elle change de coordonnées
-        if self.reward_hitbox.colliderect(self.snake.hitbox):
+        if self.reward_hitbox.colliderect(self.snake.rect):
             self.spawn_random_reward()
             self.snake.spawn_body()
-            self.snake.spawn_body()
-            self.snake.spawn_body()
-            self.snake.spawn_body()
-            self.snake.spawn_body()
-            self.snake.spawn_body()
-            self.snake.spawn_body()
-            self.snake.spawn_body()
-            self.snake.spawn_body()
+        
+        for bodypart in self.snake.bodyparts[1:]:
+            if circle_collision(self.snake.x, self.snake.y, self.snake.hitbox_radius,
+                                bodypart.x, bodypart.y, bodypart.hitbox_radius):
+                self.snake.bodyparts = []
+                break
     
     def draw(self):
         self.screen.blit(self.reward, [self.reward_x, self.reward_y])
-    
+
+def compute_euclidean_distance(x1, y1, x2, y2):
+    return math.sqrt((x2-x1) ** 2 + (y2-y1) ** 2)
+
+
+def circle_collision(x1, y1, r1, x2, y2, r2):
+    dist = compute_euclidean_distance(x1, y1, x2, y2)
+    print(dist, r1,r2)
+    if dist < (r1 + r2):
+        return True
+    return False
+
