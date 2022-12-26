@@ -13,6 +13,8 @@ class Game():
         pygame.init()
         # Horloge pour limiter les FPS (pas encore utilisé pour l'instant)
         self.clock = pygame.time.Clock()
+        # Police
+        self.font = pygame.font.SysFont('Lemon Days', 500)
         # Définir les dimensions de la fenêtre
         self.full_width = GetSystemMetrics(0)
         self.full_height = GetSystemMetrics(1)
@@ -52,11 +54,18 @@ class Game():
             if keys:
                 self.snake.mise_a_jour_position(keys)
                 self.grid.mise_a_jour_grille()
-            # On redessne tout à chaque image : le fond, la récompense et la grille
+            # On redessne tout à chaque image : le fond, la récompense, le score et la grille
             self.screen.blit(self.background, (0, 0))
+            # Score
+            score_text = self.font.render(str(self.snake.score), True, (255,255,255))
+            text_rect = score_text.get_rect(center=(self.window_width/2, self.window_height/2))
+            score_text.set_alpha(115)
+            self.screen.blit(score_text, text_rect)
+            # Le reste
             self.grid.draw()
             self.snake.draw()
             pygame.display.update()
+            self.clock.tick(150)
     
     def start(self):
         self.game_loop()

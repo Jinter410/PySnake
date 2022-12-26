@@ -29,6 +29,7 @@ class Snake():
 
     def __init__(self, paramScreen):
         self.screen = paramScreen
+        self.score = 0
         self.x = 250
         self.y = 250
         self.direction = None

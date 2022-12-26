@@ -40,11 +40,13 @@ class GrilleJeu():
         if self.reward_hitbox.colliderect(self.snake.rect):
             self.spawn_random_reward()
             self.snake.spawn_body()
+            self.snake.score += 1
         
         for bodypart in self.snake.bodyparts[1:]:
             if circle_collision(self.snake.x, self.snake.y, self.snake.hitbox_radius,
                                 bodypart.x, bodypart.y, bodypart.hitbox_radius):
                 self.snake.bodyparts = []
+                self.snake.score = 0
                 break
     
     def draw(self):
